@@ -5,9 +5,9 @@ color_yellow='\033[1;32m'
 color_end='\033[0m'
 
 echo -e "\n$color_yellow===== <<gdutils项目一件部署脚本要求及说明>> =====$color_end"
-echo -e "$color_yellow---------------[ change from v2.1 by oneking ]---------------$color_end"
+echo -e "$color_yellow---------------[ change from v1.0 by peifeng.li ]---------------$color_end"
 echo -e "$color_yellow 01.$color_end 本脚本是魔改的gdutils项目一键部署脚本;"
-echo -e "$color_yellow 02.$color_end 脚本包括“TD盘VPS上查询转存部署”和“Telegram机器人部署”两部分"
+echo -e "$color_yellow 02.$color_end 脚本包括“GD盘VPS上查询转存部署”和“Telegram机器人部署”两部分"
 echo -e "$color_yellow 03.$color_end 本脚本适应CentOS/Debian/Ubuntu三种操作系统，自动识别、自动选择对应分支一键安装部署"
 echo -e "$color_yellow 04.$color_end 三步即可完成部署：上传脚本到VPS → 设置脚本执行权限 → 运行"
 echo -e "$color_yellow 05.$color_end 准备工作一：在TG上注册好机器人取得并记录下该机器人TOKEN"
@@ -45,7 +45,7 @@ insofts=(epel-release update upgrade wget curl git unzip zip python3-distutils p
 if [[ "$os" = "Debian" ]]; then
     cmd_install="apt-get"                                     #安装命令
     cmd_install_rely="build-essential"                        #c++编译环境
-    nodejs_curl="https://deb.nodesource.com/setup_10.x"       #nodejs下载链接
+    nodejs_curl="https://deb.nodesource.com/setup_12.x"       #nodejs下载链接
     cmd_install_rpm_build=""                                  #安装rpm-build
     nginx_conf="/etc/nginx/sites-enabled/"                    #nginx配置文件存放路径
     rm_nginx_default="rm -f /etc/nginx/sites-enabled/default" #删除default
@@ -54,7 +54,7 @@ if [[ "$os" = "Debian" ]]; then
 elif [[ "$os" = "Ubuntu" ]]; then
     cmd_install="sudo apt-get"
     cmd_install_rely="build-essential"
-    nodejs_curl="https://deb.nodesource.com/setup_10.x"
+    nodejs_curl="https://deb.nodesource.com/setup_12.x"
     cmd_install_rpm_build=""
     nginx_conf="/etc/nginx/sites-enabled/"
     rm_nginx_default="rm -f /etc/nginx/sites-enabled/default"
@@ -62,7 +62,7 @@ elif [[ "$os" = "Ubuntu" ]]; then
 elif [[ "$os" = "CentOS" ]]; then
     cmd_install="yum"
     cmd_install_rely="gcc-c++ make"
-    nodejs_curl="https://rpm.nodesource.com/setup_10.x"
+    nodejs_curl="https://rpm.nodesource.com/setup_12.x"
     cmd_install_rpm_build="yum install rpm-build -y"
     nginx_conf="/etc/nginx/conf.d/"
     rm_nginx_default=""
@@ -177,7 +177,7 @@ echo -e "$color_yellow“进程守护程序pm2”开始安装......$color_end"
 sudo npm i pm2 -g && pm2 l
 echo -e "$color_yellow启动守护进程......$color_end"
 cd ./gd-utils
-pm2 start  index.js --node-args="--max-old-space-size=500"
+pm2 start  index.js --node-args="--max-old-space-size=1024"
 echo -e "$color_yellow----------------------------------------------------------$color_end"
 
 cd ~
