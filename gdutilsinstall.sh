@@ -9,13 +9,12 @@ echo -e "$color_yellow---------------[ change from v1.0 by peifeng.li ]---------
 echo -e "$color_yellow 01.$color_end 本脚本是魔改的gdutils项目一键部署脚本;"
 echo -e "$color_yellow 02.$color_end 脚本包括“GD盘VPS上查询转存部署”和“Telegram机器人部署”两部分"
 echo -e "$color_yellow 03.$color_end 本脚本适应CentOS/Debian/Ubuntu三种操作系统，自动识别、自动选择对应分支一键安装部署"
-echo -e "$color_yellow 04.$color_end 三步即可完成部署：上传脚本到VPS → 设置脚本执行权限 → 运行"
-echo -e "$color_yellow 05.$color_end 准备工作一：在TG上注册好机器人取得并记录下该机器人TOKEN"
-echo -e "$color_yellow 07.$color_end 准备工作三：向机器人@userinfobot获取个人TG账号ID并记录"
-echo -e "$color_yellow 08.$color_end 准备工作四：注册好一个Google team drive加入sa并记录下该盘ID"
+echo -e "$color_yellow 05.$color_end 1：在TG上注册好机器人取得并记录下该机器人TOKEN"
+echo -e "$color_yellow 07.$color_end 2：向机器人@userinfobot获取个人TG账号ID并记录"
+echo -e "$color_yellow 08.$color_end 3：注册好一个Google team drive加入sa并记录下该盘ID"
 
 echo -e "$color_yellow------------------------------------------------$color_end"
-read -s -n1 -p "★★★ 如已做好以上[5/6/7/8]准备或不需要安装Telegram机器人请按任意键开始部署，如未做好准备请按“Ctrl+c”终止脚本 ★★★"
+read -s -n1 -p "★★★ 如已做好准备或不需要安装Telegram机器人请按任意键开始部署，如未做好准备请按“Ctrl+c”终止脚本 ★★★"
 echo -e "\n$color_yellow------------------------------------------------$color_end"
 
 # 识别操作系统
@@ -132,39 +131,39 @@ echo -e "\n$color_yellow  ===== <<开始部署gdutils查询转存TG机器人>> =
 read -p """请输入机器人token并回车
     Your Bot Token =>:""" YOUR_BOT_TOKEN
 #判断token是否输入正确
-# while [[ "${#YOUR_BOT_TOKEN}" != 46 ]]; do
-#     echo -e "$color_yellow★★★ 机器人TOKEN输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
-#     read -p """请输入机器人token并回车
-#     Your Bot Token =>:""" YOUR_BOT_TOKEN
-# done
+while [[ "${#YOUR_BOT_TOKEN}" != 46 ]]; do
+     echo -e "$color_yellow★★★ 机器人TOKEN输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
+     read -p """请输入机器人token并回车
+     Your Bot Token =>:""" YOUR_BOT_TOKEN
+     done
 
 
 read -p """请输入使用机器人的telegram账号ID(获取ID机器人@userinfobot)并回车
     Your Telegram ID =>:""" YOUR_TELEGRAM_ID
 #判断telegram ID是否正确(通过判断是不是纯数字)
-# until [[ $YOUR_TELEGRAM_ID =~ ^-?[0-9]+$ ]]; do
-#     echo -e "$color_yellow★★★ 您的TG账号ID输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
-#     read -p """请输入使用机器人的telegram账号ID(获取ID机器人@userinfobot)并回车
-#     Your Telegram ID =>:""" YOUR_TELEGRAM_ID
-# done
+until [[ $YOUR_TELEGRAM_ID =~ ^-?[0-9]+$ ]]; do
+     echo -e "$color_yellow★★★ 您的TG账号ID输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
+     read -p """请输入使用机器人的telegram账号ID(获取ID机器人@userinfobot)并回车
+     Your Telegram ID =>:""" YOUR_TELEGRAM_ID
+     done
 
 read -p """请输入使用机器人的telegram账号NAME(获取NAME机器人@userinfobot)并回车
     Your Telegram NAME =>:""" YOUR_TELEGRAM_NAME
 #判断telegram NAME是否正确(通过判断是不是纯数字)
-# until [[ $YOUR_TELEGRAM_NAME =~ ^-?[0-9]+$ ]]; do
-#     echo -e "$color_yellow★★★ 您的TG账号NAME输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
-#     read -p """请输入使用机器人的telegram账号NAME(获取NAME机器人@userinfobot)并回车
-#     Your Telegram NAME =>:""" YOUR_TELEGRAM_NAME
-# done
+ until [[ $YOUR_TELEGRAM_NAME =~ ^-?[0-9]+$ ]]; do
+     echo -e "$color_yellow★★★ 您的TG账号NAME输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
+     read -p """请输入使用机器人的telegram账号NAME(获取NAME机器人@userinfobot)并回车
+     Your Telegram NAME =>:""" YOUR_TELEGRAM_NAME
+     done
 
 read -p """请输入转存默认目的地团队盘ID(不指定转存目的地默认改地址，脚本强制要求输入团队盘ID)并回车
     Your Google Team Drive ID =>:""" YOUR_GOOGLE_TEAM_DRIVE_ID
 #判断google team drive ID是否正确（团队盘ID长度19位）
-# while [[ "${#YOUR_GOOGLE_TEAM_DRIVE_ID}" != 19 ]]; do
-#     echo -e "$color_yellow★★★ 您的Google team drive ID输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
-#     read -p """请输入转存默认目的地ID(不指定转存目的地默认该地址，脚本强制要求输入团队盘ID)并回车
-#     Your Google Team Drive ID =>:""" YOUR_GOOGLE_TEAM_DRIVE_ID
-# done
+while [[ "${#YOUR_GOOGLE_TEAM_DRIVE_ID}" != 19 ]]; do
+     echo -e "$color_yellow★★★ 您的Google team drive ID输入不正确，请重新输入或按“Ctrl+C”结束安装！ ★★★$color_end"
+     read -p """请输入转存默认目的地ID(不指定转存目的地默认该地址，脚本强制要求输入团队盘ID)并回车
+     Your Google Team Drive ID =>:""" YOUR_GOOGLE_TEAM_DRIVE_ID
+     done
 cd ../
 #cd ./gd-utils &&
     sed -i "s/bot_token/$YOUR_BOT_TOKEN/g" ./gd-utils/config.js &&
@@ -181,17 +180,4 @@ pm2 start  index.js --node-args="--max-old-space-size=1024"
 echo -e "$color_yellow----------------------------------------------------------$color_end"
 
 cd ~
-#rm -f gdutilsinstall.sh
-
-###########################gdutils功能建议##################################
-# 本部分是对gdutils项目的建议，因为我主要用的是查询功能所以以下建议只涉及查询功能
-# 1-把以下参数放入配置文件设置：sa存放路径
-# 2-改sa“随机”使用为“顺序”分组使用；
-# 3-增加输出模式，可以用命令行后带参数选择，具体模式建议：
-#   ①按一级或者二级文件夹显示数量大小
-#   ②可以一次性统计多个磁盘并且输出单个磁盘文件数和大小以及几个磁盘总和
-#   ③获取id对应的文件夹名或者磁盘明保存数据库，给个命令能够查询历史记录汇总或者指定汇总
-# 4-查询过程中输出方式不要每次都输出一次，可以固定+数字变化
-# 5-命令参数可加在ID前或后，如果非要固定一种的话就加在ID之前
-# 6-命令行也改为默认sa模式
-############################################################################
+rm -f gdutilsinstall.sh
