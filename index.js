@@ -12,23 +12,23 @@ const { adminUsers } = AUTH
 
 const BUTTONS = {
   youtube: {
-      label: '👋 youtube',
+      label: '📺 youtube',
       command: '/yd'
   },
   aria2: {
-      label: '🌍 aria2',
+      label: '🗃 aria2',
       command: '/aria2'
   },
-//   restart: {
-//     label: '👋 restart',
-//     command: '/restart'
-//   },
+  restart: {
+    label: '⚙️ 重启',
+    command: '/restart'
+  },
   runshell: {
-    label: '👋 runshell',
+    label: '⏳ runshell',
     command: '/runshell'
   },
   update: {
-      label: '🌍 update',
+      label: '🛠 更新',
       command: '/update'
   },
   hello: {
@@ -40,7 +40,7 @@ const BUTTONS = {
       command: '/world'
   },
   hide: {
-      label: '⌨️ Hide keyboard',
+      label: '⌨️ 隐藏菜单',
       command: '/hide'
   }
 };
@@ -68,7 +68,7 @@ let MSG = '';
 function exec (cmd, msg) {
   const id = msg.from.id;
   if(adminUsers.indexOf(id) < 0){
-      msg.reply.text('您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
+      msg.reply.text('🔸 您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
       return console.warn('收到非白名单用户的请求')
   }
 
@@ -95,7 +95,7 @@ function exec (cmd, msg) {
     }
 }
 
-bot.sendMessage(adminUsers[0],"you gdutils_bot ins online!") //填写你的chat id ,机器人上线时你第一时间里会收到通知
+bot.sendMessage(adminUsers[0],"🔸 谷歌转存机器人现在开始为您服务.") //填写你的chat id ,机器人上线时你第一时间里会收到通知
 
 bot.on('/yd', (msg) =>{
   if(MSG.startsWith('http')){
@@ -109,16 +109,14 @@ bot.on('/yd', (msg) =>{
 });
 
 bot.on('/aria2', (msg) => exec('aria2 ' + MSG, msg));
-bot.on('/hide', (msg) => msg.reply.text('Type /start to show keyboard again.', {replyMarkup: 'hide'}));
-bot.on('/restart', (msg) => {
-  //   exec('pm2 restart all', msg);
-  msg.reply.text('已经取消此功能!')
-  msg.reply.text('代码已更新，请在后台执行pm2 restart all！')
+bot.on('/hide', (msg) => msg.reply.text('🔸 再次打开系统菜单,请输入: /start .', {replyMarkup: 'hide'}));
+
+bot.on('/taskall', msg => {
+  exec('task all', msg);
 });
 
-bot.on('/update', msg => {
-  exec('git pull -f', msg);
-  msg.reply.text('代码已更新，请在后台执行pm2 restart all！')
+bot.on('/taskclear', msg => {
+  exec('task clear', msg);
 });
 
 bot.on('/runshell', msg => {
@@ -130,10 +128,10 @@ bot.on('/runshell', msg => {
 
 bot.on('/start', (msg) => {
   let replyMarkup = bot.keyboard([
-      [BUTTONS.update.label],
+      [BUTTONS.update.label, BUTTONS.restart.label],
       [BUTTONS.hide.label]
   ], {resize: true});
-  return bot.sendMessage(msg.from.id, 'ChatId is ' + msg.chat.id + ',See keyboard below.', {replyMarkup});
+  return bot.sendMessage(msg.from.id, '🔹 对话ID是:  ' + msg.chat.id + ',\n可用功能请查看键盘.', {replyMarkup});
 });
 
 bot.on('/error', (msg) => msg.MAKE_AN_ERROR);
@@ -156,7 +154,7 @@ bot.on('text', (msg) => {
     // user_id = user_id && String(user_id).toLowerCase()
     const id = msg.from.id;
     if(adminUsers.indexOf(id) < 0){
-        msg.reply.text('您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
+        msg.reply.text('🔸 您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
         return console.warn('收到非白名单用户的请求')
     }
       const fid = extract_fid(text) || extract_from_text(text) || extract_from_text(message_str)
@@ -164,55 +162,55 @@ bot.on('text', (msg) => {
       if (!no_fid_commands.some(cmd => text.startsWith(cmd)) && !validate_fid(fid)) {
         console.log(message_str);
         if (text.startsWith('/')||text.startsWith('👋')||text.startsWith('🌍')||text.startsWith('⌨️')||text.startsWith(' ')) return;
-        sm({ chat_id, text: '未识别出分享ID' })
+        sm({ chat_id, text: '🔸 未识别出有效的分享ID' })
         if(message_str.startsWith('http')){
           is_shell = true
           let replyMarkup = bot.keyboard([
             [BUTTONS.youtube.label, BUTTONS.aria2.label],
             [BUTTONS.hide.label]
           ], {resize: true});
-          return bot.sendMessage(msg.from.id, '你可能要执行：', {replyMarkup});
+          return bot.sendMessage(msg.from.id, '🔸 你可能要执行：', {replyMarkup});
           }
         let replyMarkup = bot.keyboard([
           [BUTTONS.update.label, BUTTONS.runshell.label],
           [BUTTONS.hide.label]
         ], {resize: true});
-        return bot.sendMessage(msg.from.id, '你可能要执行：', {replyMarkup});
+        return bot.sendMessage(msg.from.id, '🔸 你可能要执行：', {replyMarkup});
       }
       if (text.startsWith('/help')) return send_help(chat_id)
       if (text.startsWith('/bm')) {
         const [cmd, action, alias, target] = text.split(' ').map(v => v.trim()).filter(v => v)
         if (!action) return send_all_bookmarks(chat_id)
         if (action === 'set') {
-          if (!alias || !target) return sm({ chat_id, text: '别名和目标ID不能为空' })
-          if (alias.length > 24) return sm({ chat_id, text: '别名不要超过24个英文字符长度' })
-          if (!validate_fid(target)) return sm({ chat_id, text: '目标ID格式有误' })
+          if (!alias || !target) return sm({ chat_id, text: '🔸 别名和目标ID不能为空' })
+          if (alias.length > 24) return sm({ chat_id, text: '🔸 别名不要超过24个英文字符长度' })
+          if (!validate_fid(target)) return sm({ chat_id, text: '🔸 目标ID格式有误' })
           set_bookmark({ chat_id, alias, target })
         } else if (action === 'unset') {
-          if (!alias) return sm({ chat_id, text: '别名不能为空' })
+          if (!alias) return sm({ chat_id, text: '🔸 别名不能为空' })
           unset_bookmark({ chat_id, alias })
         } else {
           send_bm_help(chat_id)
         }
       } else if (text.startsWith('/count')) {
-        if (counting[fid]) return sm({ chat_id, text: fid + ' 正在统计，请稍等片刻' })
+        if (counting[fid]) return sm({ chat_id, text: ' 🔹 ' + 'ID:  ' + fid + '\n🔹 正在统计，请稍候...' })
         try {
           counting[fid] = true
           const update = text.endsWith(' -u')
           send_count({ fid, chat_id, update })
         } catch (err) {
           console.error(err)
-          sm({ chat_id, text: fid + ' 统计失败：' + err.message })
+          sm({ chat_id, text: ' 🔸 统计失败!' + '\n🔹 ID:  ' + fid  + '\n🔸 失败原因:  ' + err.message })
         } finally {
           delete counting[fid]
         }
       } else if (text.startsWith('/copy')) {
         let target = text.replace('/copy', '').replace(' -u', '').trim().split(' ').map(v => v.trim()).filter(v => v)[1]
         target = get_target_by_alias(target) || target
-        if (target && !validate_fid(target)) return sm({ chat_id, text: `目标ID ${target} 格式不正确` })
+        if (target && !validate_fid(target)) return sm({ chat_id, text: `🔸 目标ID ${target} 格式不正确` })
         const update = text.endsWith(' -u')
         tg_copy({ fid, target, chat_id, update }).then(task_id => {
-          task_id && sm({ chat_id, text: `开始复制，任务ID: ${task_id} 可输入 /task ${task_id} 查询进度` })
+          task_id && sm({ chat_id, text: `🔹 已开始复制，进度查询请输入:\n/task ${task_id}`})
         })
       } else if (text.startsWith('/task')) {
         let task_id = text.replace('/task', '').trim()
@@ -231,7 +229,7 @@ bot.on('text', (msg) => {
         task_id = parseInt(task_id)
         if (!task_id) {
           const running_tasks = db.prepare('select id from task where status=?').all('copying')
-          if (!running_tasks.length) return sm({ chat_id, text: '当前暂无运行中的任务' })
+          if (!running_tasks.length) return sm({ chat_id, text: '🔸 当前暂无运行中的任务' })
           return running_tasks.forEach(v => send_task_info({ chat_id, task_id: v.id }).catch(console.error))
         }
         send_task_info({ task_id, chat_id }).catch(console.error)
@@ -245,7 +243,7 @@ bot.on('callbackQuery', msg => {
     // User message alert
     const id = msg.from.id;
     if(adminUsers.indexOf(id) < 0){
-        msg.reply.text('您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username')
+        msg.reply.text('🔸 您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username')
         return console.warn('收到非白名单用户的请求')
     }
 
@@ -259,23 +257,23 @@ bot.on('callbackQuery', msg => {
     //console.log("data:"+data);
     //console.log("action:"+action);console.log("fid:"+fid);
     if (action === 'count') {
-      if (counting[fid]) return sm({ chat_id, text: fid + ' 正在统计，请稍等片刻' })
+      if (counting[fid]) return sm({ chat_id, text: '🔸 ' + 'ID:  ' + fid + '\n🔹 正在统计，请稍候...' })
       counting[fid] = true
       send_count({ fid, chat_id }).catch(err => {
         console.error(err)
-        sm({ chat_id, text: fid + ' 统计失败：' + err.message })
+        sm({ chat_id, text: '🔸 统计失败!' + '\n🔹 ID:  ' + fid + '\n🔹 失败原因:  ' + err.message })
       }).finally(() => {
         delete counting[fid]
       })
     } else if (action === 'copy') {
       console.log("copy id:"+id);
-      if (COPYING_FIDS[fid]) return sm({ chat_id, text: `正在处理 ${fid} 的复制命令` })
+      if (COPYING_FIDS[fid]) return sm({ chat_id, text: `🔹 正在处理 ${fid} 的复制命令` })
       COPYING_FIDS[fid] = true
       tg_copy({ fid, target: get_target_by_alias(target), chat_id }).then(task_id => {
-        task_id && sm({ chat_id, text: `开始复制，任务ID: ${task_id} 可输入 /task ${task_id} 查询进度` })
+        task_id && sm({ chat_id, text: `🔹 已开始复制，查询进度请输入:\n/task ${task_id}` })
       }).finally(() => COPYING_FIDS[fid] = false)
     } else if (action === 'update') {
-      if (counting[fid]) return sm({ chat_id, text: fid + ' 正在统计，请稍等片刻' })
+      if (counting[fid]) return sm({ chat_id, text: '🔹 ' + 'ID: ' + fid + '\n🔹 正在统计，请稍候...' })
       counting[fid] = true
       send_count({ fid, chat_id, update: true }).finally(() => {
         delete counting[fid]
@@ -294,7 +292,7 @@ bot.on(/^!.*/, (msg, props) => {
   // console.log(prex);
   const id = msg.from.id;
   if(adminUsers.indexOf(id) < 0){
-      msg.reply.text('您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
+      msg.reply.text('🔸 您的用户名或ID不在机器人的白名单中，如果是您配置的机器人，请先到config.js中配置自己的username');
       return console.warn('收到非白名单用户的请求')
   }
 
