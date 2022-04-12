@@ -1,6 +1,6 @@
 # Google Drive 百宝箱
 
-> 本项目将TeleShellBot 和 gd-utils 做了整合（本人只做了整合，没有改变核心的代码逻辑）
+> 本项目将TeleShellBot 和 gd-utils 做了整合
 
 > 做到了去掉的http端口占用和nginx以及SSL的配置，也能使用telegram bot 功能
 
