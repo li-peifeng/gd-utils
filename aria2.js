@@ -12,7 +12,7 @@ const FOLDER_TYPE = 'application/vnd.google-apps.folder'
 const { argv } = require('yargs')
   .usage('用法: ./$0 <folder-id> [options]')
   .alias('o', 'output')
-  .describe('output', '指定输出文件，不填默认为uri.txt')
+  .describe('output', '指定输出文件，默认为uri.txt')
   .alias('u', 'update')
   .describe('u', '不使用本地缓存，强制从线上获取源文件夹信息')
   .alias('S', 'service_account')
