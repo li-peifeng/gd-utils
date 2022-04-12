@@ -5,7 +5,9 @@
 > 做到了去掉的http端口占用和nginx以及SSL的配置，也能使用telegram bot 功能
 
 ## 一键安装脚本：
-`bash -c "$(curl -fsSL https://github.com/li-peifeng/gd-utils/raw/master/gdutilsinstall.sh)"`
+```
+bash -c "$(curl -fsSL https://github.com/li-peifeng/gd-utils/raw/master/gdutilsinstall.sh)"
+```
 
 ## 补充说明
 在`config.js`文件里，还有另外的几个参数：
