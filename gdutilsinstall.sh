@@ -1,6 +1,3 @@
-#!"C:\Program Files\Git\usr\bin\bash"
-#/bin/bash
-#颜色变量，因为颜色字符复杂，定义一个函数表示其代码字符串能够很好容错，更改也方便
 color_yellow='\033[1;32m'
 color_end='\033[0m'
 
