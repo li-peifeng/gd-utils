@@ -1,3 +1,5 @@
+#!/bin/bash
+
 color_yellow='\033[1;32m'
 color_end='\033[0m'
 
