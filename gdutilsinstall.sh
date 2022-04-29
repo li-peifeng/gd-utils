@@ -107,7 +107,7 @@ $cmd_install install nodejs -y
 #export PATH=$PATH:~/node/bin/npm
 
 $cmd_install_rpm_build
-git clone https://github.com/dissipator/gd-utils.git gd-utils && cd gd-utils
+git clone https://github.com/li-peifeng/gd-utils.git gd-utils && cd gd-utils
 npm config set unsafe-perm=true
 npm install -g node-gyp 
 # 如果better-sqlite3有安装错误,报python 变量的错 设置python npm变量 如果不行直接加入系统的环境变量的path
